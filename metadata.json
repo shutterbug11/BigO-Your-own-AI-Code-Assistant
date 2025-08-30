@@ -1,0 +1,5 @@
+{
+  "name": "BigO: AI Code Reviewer",
+  "description": "An automated code review tool that uses the Gemini API to provide deep analysis and feedback on code. Features include requirement validation, technical debt analysis, automated documentation, test generation, consistency auditing, and Socratic feedback to foster developer growth.",
+  "requestFramePermissions": []
+}
