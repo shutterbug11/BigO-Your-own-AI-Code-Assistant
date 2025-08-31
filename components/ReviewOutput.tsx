@@ -1,5 +1,7 @@
+
 import React from 'react';
 import type { ReviewResult } from '../types';
+import { CopyButton } from './CopyButton';
 
 const OutputCard: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-lg shadow-sm overflow-hidden">
@@ -45,7 +47,10 @@ export const ReviewOutput: React.FC<{ result: ReviewResult }> = ({ result }) => 
       {result.onboardingAssistance && (
         <OutputCard title="Onboarding Assistance">
           <h4 className="font-semibold">Suggested Comments:</h4>
-          <pre className="bg-light-bg dark:bg-dark-bg p-3 rounded-md font-mono text-xs overflow-x-auto border-l-4 border-brand-secondary"><code className="whitespace-pre-wrap">{result.onboardingAssistance.comments}</code></pre>
+          <div className="relative">
+            <CopyButton textToCopy={result.onboardingAssistance.comments} />
+            <pre className="bg-light-bg dark:bg-dark-bg p-3 rounded-md font-mono text-xs overflow-x-auto border-l-4 border-brand-secondary"><code className="whitespace-pre-wrap">{result.onboardingAssistance.comments}</code></pre>
+          </div>
           <h4 className="font-semibold mt-3">Auto-Generated Documentation:</h4>
           <p>{result.onboardingAssistance.documentation}</p>
         </OutputCard>
@@ -56,7 +61,10 @@ export const ReviewOutput: React.FC<{ result: ReviewResult }> = ({ result }) => 
             {result.generativeTesting.tests.map((test, i) => (
                 <div key={i}>
                     <h4 className="font-semibold">{test.type}:</h4>
-                    <pre className="bg-light-bg dark:bg-dark-bg p-3 rounded-md font-mono text-xs overflow-x-auto border-l-4 border-brand-secondary"><code>{test.code}</code></pre>
+                    <div className="relative">
+                        <CopyButton textToCopy={test.code} />
+                        <pre className="bg-light-bg dark:bg-dark-bg p-3 rounded-md font-mono text-xs overflow-x-auto border-l-4 border-brand-secondary"><code>{test.code}</code></pre>
+                    </div>
                 </div>
             ))}
         </OutputCard>
