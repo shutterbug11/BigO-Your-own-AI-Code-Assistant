@@ -22,7 +22,7 @@ export const FEATURES: Feature[] = [
     description: 'Auto-generates comments and documentation for complex code.',
     icon: (
         <IconWrapper>
-            <svg xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>
         </IconWrapper>
     ),
   },
@@ -49,14 +49,14 @@ export const FEATURES: Feature[] = [
 ];
 
 export const LANGUAGES = [
-    { key: 'javascript', name: 'JavaScript' },
-    { key: 'typescript', name: 'TypeScript' },
-    { key: 'python', name: 'Python' },
-    { key: 'java', name: 'Java' },
-    { key: 'csharp', name: 'C#' },
-    { key: 'go', name: 'Go' },
-    { key: 'rust', name: 'Rust' },
-    { key: 'html', name: 'HTML' },
-    { key: 'css', name: 'CSS' },
-    { key: 'sql', name: 'SQL' },
+    { key: 'javascript', name: 'JavaScript', extensions: ['js', 'jsx', 'mjs', 'cjs'] },
+    { key: 'typescript', name: 'TypeScript', extensions: ['ts', 'tsx'] },
+    { key: 'python', name: 'Python', extensions: ['py'] },
+    { key: 'java', name: 'Java', extensions: ['java'] },
+    { key: 'csharp', name: 'C#', extensions: ['cs'] },
+    { key: 'go', name: 'Go', extensions: ['go'] },
+    { key: 'rust', name: 'Rust', extensions: ['rs'] },
+    { key: 'html', name: 'HTML', extensions: ['html', 'htm'] },
+    { key: 'css', name: 'CSS', extensions: ['css'] },
+    { key: 'sql', name: 'SQL', extensions: ['sql'] },
 ];
