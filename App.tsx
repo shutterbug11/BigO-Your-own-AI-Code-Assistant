@@ -12,6 +12,51 @@ import { getAICodeReview, getCorrectedCode } from './services/geminiService';
 import type { ReviewResult, ReviewItem, FeatureKey } from './types';
 import { FEATURES } from './constants';
 
+const formatReviewResultForNote = (code: string, language: string, result: ReviewResult): string => {
+    let note = `## Review at ${new Date().toLocaleString()}\n\n`;
+    note += `### Language: ${language}\n`;
+    note += `### Code Reviewed:\n\`\`\`${language}\n${code}\n\`\`\`\n\n`;
+    note += `### Review Findings:\n`;
+
+    if (result.socraticFeedback && result.socraticFeedback.questions.length > 0) {
+        note += `#### Socratic Feedback\n`;
+        result.socraticFeedback.questions.forEach(q => {
+            note += `- ${q}\n`;
+        });
+        note += '\n';
+    }
+
+    if (result.requirementValidation) {
+        note += `#### Requirement Validation\n`;
+        note += `**Status:** ${result.requirementValidation.isMet ? "Requirements Met" : "Requirements Not Met"}\n`;
+        note += `**Summary:** ${result.requirementValidation.summary}\n`;
+        if (result.requirementValidation.discrepancies?.length > 0) {
+            note += `**Discrepancies:**\n`;
+            result.requirementValidation.discrepancies.forEach(d => {
+                note += `- ${d}\n`;
+            });
+        }
+        note += '\n';
+    }
+
+    if (result.onboardingAssistance) {
+        note += `#### Onboarding Assistance\n`;
+        note += `**Suggested Comments:**\n\`\`\`\n${result.onboardingAssistance.comments}\n\`\`\`\n`;
+        note += `**Auto-Generated Documentation:**\n${result.onboardingAssistance.documentation}\n\n`;
+    }
+
+    if (result.generativeTesting && result.generativeTesting.tests.length > 0) {
+        note += `#### Generative Testing\n`;
+        result.generativeTesting.tests.forEach(test => {
+            note += `**Test Type: ${test.type}**\n\`\`\`\n${test.code}\n\`\`\`\n`;
+        });
+        note += '\n';
+    }
+
+    return note.trim();
+};
+
+
 const App: React.FC = () => {
   const [theme, setTheme] = useTheme();
   const [code, setCode] = useState<string>('');
@@ -107,6 +152,17 @@ const App: React.FC = () => {
         setIsCorrecting(false);
     }
   };
+
+  const handleTakeNote = useCallback(() => {
+    if (!reviewResult || !code) return;
+
+    const newNote = formatReviewResultForNote(code, language, reviewResult);
+    setNotes(prevNotes => {
+        const separator = '\n\n---\n\n';
+        return prevNotes ? `${prevNotes}${separator}${newNote}` : newNote;
+    });
+    setActiveTab('notes');
+  }, [reviewResult, code, language, setNotes]);
 
   const loadFromHistory = (item: ReviewItem) => {
     setCode(item.code);
@@ -220,7 +276,7 @@ const App: React.FC = () => {
             
             {error && <div className="text-red-500 bg-red-100 dark:bg-red-900/50 p-4 rounded-lg text-center">{error}</div>}
             
-            {reviewResult && <ReviewOutput result={reviewResult} />}
+            {reviewResult && <ReviewOutput result={reviewResult} onTakeNote={handleTakeNote} />}
           </div>
         </div>
       </main>
