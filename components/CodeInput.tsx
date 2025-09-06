@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { LANGUAGES } from '../constants';
+import { CopyButton } from './CopyButton';
 
 interface CodeInputProps {
   code: string;
@@ -28,18 +29,16 @@ export const CodeInput: React.FC<CodeInputProps> = ({ code, setCode, language, s
       setCode(text);
 
       const extension = file.name.split('.').pop()?.toLowerCase();
-      if (extension) {
-        const detectedLang = LANGUAGES.find(lang => lang.extensions.includes(extension));
-        if (detectedLang) {
-          setLanguage(detectedLang.key);
-        }
-      }
+      const detectedLang = LANGUAGES.find(lang => extension && lang.extensions.includes(extension));
+      
+      setLanguage(detectedLang ? detectedLang.key : 'javascript');
     };
     reader.onerror = () => {
         console.error("Failed to read file.");
     }
     reader.readAsText(file);
 
+    // Clear the input value to allow uploading the same file again
     event.target.value = '';
   };
 
@@ -88,13 +87,16 @@ export const CodeInput: React.FC<CodeInputProps> = ({ code, setCode, language, s
                 Upload File
             </button>
         </div>
-        <textarea
-          id="code-input"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          placeholder="Paste your code here or upload a file..."
-          className="p-3 font-mono text-sm bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-brand-primary focus:outline-none transition-shadow resize-none h-96"
-        />
+        <div className="relative">
+          {code && <CopyButton textToCopy={code} />}
+          <textarea
+            id="code-input"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            placeholder="Paste your code here or upload a file..."
+            className="w-full p-3 font-mono text-sm bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-brand-primary focus:outline-none transition-shadow resize-none h-96"
+          />
+        </div>
       </div>
     </div>
   );
